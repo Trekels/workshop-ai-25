@@ -1,0 +1,15 @@
+; top-most EditorConfig file
+root = true
+
+; Unix-style newlines
+[*]
+end_of_line = LF
+insert_final_newline = true
+
+[*.{php,yml,yaml}]
+indent_style = space
+indent_size = 4
+
+[*.{html.twig,html,js,json}]
+indent_style = space
+indent_size = 2

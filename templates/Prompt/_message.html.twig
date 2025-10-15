@@ -1,0 +1,15 @@
+{% macro print(message) %}
+  <div class="row">
+    {% if message.type == 'user' %}
+      <div class="col"></div>
+    {% endif %}
+    <div class="col-11">
+      <div class="alert alert-{% if message.type == 'user' %}light{% else %}dark{% endif %}" role="alert">
+        {{ message.content }}
+      </div>
+    </div>
+    {% if message.type == 'system' %}
+      <div class="col"></div>
+    {% endif %}
+  </div>
+{% endmacro %}
