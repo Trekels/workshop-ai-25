@@ -38,19 +38,12 @@ final readonly class KnowledgeItemRepository
         return $stmt->fetchAll()[0] ?? null;
     }
 
-    public function simSearch(string $embeddedQuery): void
+    public function simSearch(string $embeddedQuery): array
     {
-        $stmt = $this->conn->query('
-            SELECT *, co_sim(:query, embedding) AS similarity
-            FROM knowledge_items
-            ORDER BY similarity DESC
-            LIMIT :k
-        ');
-        $stmt->bindValue(':query', $embeddedQuery);
-        $stmt->bindValue(':k', 5);
-        $stmt->execute();
-
-        $stmt->fetchAll();
+        return $this->conn->exec(
+            "SELECT *, co_sim(:query, embedding) AS similarity FROM knowledge_items",
+            ['query' => $embeddedQuery]
+        );
     }
 
     public function fetchAll(): array
