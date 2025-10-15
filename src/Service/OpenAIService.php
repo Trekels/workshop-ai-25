@@ -9,6 +9,7 @@ use OpenAI\Client;
 final class OpenAIService
 {
     private const string MODEL = 'gpt-4o';
+    private const string EMBED_MODEL = 'text-embedding-3-small';
 
     public function __construct(
         private readonly Client $AIClient,
@@ -22,5 +23,14 @@ final class OpenAIService
         ])->outputText;
     }
 
-    // TODO: Embedding method.
+    public function embed(string $content): array
+    {
+        $response = $this->AIClient->embeddings()->create([
+            'model' => self::EMBED_MODEL,
+            'input' => $content,
+        ]);
+
+        $embeddings = $response->embeddings;
+        return $embeddings[array_key_first($embeddings)]->embedding;
+    }
 }

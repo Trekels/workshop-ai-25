@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Repository\KnowledgeItemRepository;
 use App\Service\OpenAIService;
 use OpenAI\Client as OpenAIClient;
 use App\Database\DatabaseConnection;
@@ -19,6 +20,10 @@ $container->add(OpenAIClient::class, function () use ($container) {
     return OpenAI::client($_ENV['OPEN_AI_API_KEY']);
 });
 
-$container->add(MessagesRepository::class)->addArgument(DatabaseConnection::class);
-$container->add(ConversationService::class)->addArguments([OpenAIService::class, MessagesRepository::class]);
 $container->add(OpenAIService::class)->addArguments([OpenAIClient::class]);
+$container->add(MessagesRepository::class)->addArgument(DatabaseConnection::class);
+$container->add(ConversationService::class)->addArguments([
+    OpenAIService::class,
+    MessagesRepository::class,
+    KnowledgeItemRepository::class,
+]);

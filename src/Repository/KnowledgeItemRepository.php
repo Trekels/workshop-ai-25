@@ -41,7 +41,7 @@ final readonly class KnowledgeItemRepository
     public function simSearch(string $embeddedQuery): array
     {
         return $this->conn->exec(
-            "SELECT *, co_sim(:query, embedding) AS similarity FROM knowledge_items",
+            "SELECT *, co_sim(:query, embedding) AS similarity FROM knowledge_items LIMIT 5",
             ['query' => $embeddedQuery]
         );
     }

@@ -9,6 +9,7 @@ use App\Repository\KnowledgeItemRepository;
 final readonly class KnowledgeService
 {
     public function __construct(
+        private OpenAIService $AIService,
         private KnowledgeItemRepository $itemRepository,
     ) {}
 
@@ -19,16 +20,14 @@ final readonly class KnowledgeService
 
     public function updateItem(int $id, string $content): void
     {
-        // TODO get embedding...
-        $embedding = [0.1];
+        $embedding = $this->AIService->embed($content);
 
         $this->itemRepository->update($id, $content, pack('f*', ...$embedding));
     }
 
     public function addItem(string $content): void
     {
-        // TODO get embedding...
-        $embedding = [0.1];
+        $embedding = $this->AIService->embed($content);
 
         $this->itemRepository->insert($content, pack('f*', ...$embedding));
     }
