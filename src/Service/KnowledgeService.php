@@ -14,7 +14,15 @@ final readonly class KnowledgeService
 
     public function getItem(int $id): array
     {
-        $this->itemRepository->findOne($id);
+        return $this->itemRepository->findOne($id);
+    }
+
+    public function updateItem(int $id, string $content): void
+    {
+        // TODO get embedding...
+        $embedding = [0.1];
+
+        $this->itemRepository->update($id, $content, pack('f*', ...$embedding));
     }
 
     public function addItem(string $content): void

@@ -28,7 +28,9 @@ final readonly class EditKnowledgeItemController
         $form->handleRequest();
 
         if ($form->isSubmitted()) {
-            $this->service->addItem($form->getData()['content']);
+            null === $item ?
+                $this->service->addItem($form->getData()['content']) :
+                $this->service->updateItem((int) $id, $form->getData()['content']);
 
             return new Response(302, ['Location' => '/knowledge/items']);
         }

@@ -11,6 +11,15 @@
 
   <div>
     <ul class="list-group">
+      {% for item in items %}
+
+      <li class="list-group-item text-center">
+        <a href="/knowledge/item/{{ item.id }}">
+          {{ item.content | slice(0, 40) }}
+        </a>
+      </li>
+      {% endfor %}
+
       <li class="list-group-item text-center">
         <a href="/knowledge/create">
           add new item

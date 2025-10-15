@@ -20,12 +20,22 @@ final readonly class KnowledgeItemRepository
         );
     }
 
+    public function update(int $id, string $content, string $embedding): void
+    {
+        $this->conn->exec(
+            "UPDATE knowledge_items SET content = :content, embedding = :embedding WHERE id = :id",
+            ['id' => $id, 'content' => $content, 'embedding' => $embedding],
+        );
+
+    }
+
     public function findOne(int $id): ?array
     {
         $stmt = $this->conn->query("SELECT * FROM knowledge_items WHERE id = :id");
-        $stmt->bindValue('id', $id);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->fetchAll()[0] ?? null;
     }
 
     public function simSearch(string $embeddedQuery): void
@@ -38,6 +48,7 @@ final readonly class KnowledgeItemRepository
         ');
         $stmt->bindValue(':query', $embeddedQuery);
         $stmt->bindValue(':k', 5);
+        $stmt->execute();
 
         $stmt->fetchAll();
     }
